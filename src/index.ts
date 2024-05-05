@@ -144,4 +144,8 @@ client.login(config.DISCORD_TOKEN).catch(console.error);
 
 server.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
+
+  setInterval(() => {
+    http.get(`http://localhost:${PORT}`);
+  }, 600000);
 });
