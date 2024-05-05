@@ -1,0 +1,7 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "discord-bot"]
+	url = https://github.com/JoeJoeflyn/discord-bot.git
+	fetch = +refs/heads/*:refs/remotes/discord-bot/*
