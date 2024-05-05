@@ -1,11 +1,19 @@
 import { usePlayer } from "discord-player";
 import { AutocompleteInteraction, EmbedBuilder } from "discord.js";
+import http from "http";
 import cron from "node-cron";
+import { handleTimeout } from "./auto/timeout";
 import { commands } from "./command";
 import { config } from "./config/config";
 import { client, player } from "./config/player";
 import { deployCommands } from "./deploy/deploy-commands";
-import { handleTimeout } from "./auto/timeout";
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Discord bot is running\n");
+});
+
+const PORT = process.env.PORT || 3000;
 
 player.extractors.loadDefault((ext) => ext !== "AppleMusicExtractor");
 
@@ -133,3 +141,7 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(config.DISCORD_TOKEN).catch(console.error);
+
+server.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
