@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 player.extractors.loadDefault((ext) => ext !== "AppleMusicExtractor");
 
-player.events.on("playerFinish", (queue) => {
+player.events.on("emptyQueue", (queue) => {
   const embed = new EmbedBuilder()
     .setColor("#f1af32")
     .setTitle("Queue Concluded")
