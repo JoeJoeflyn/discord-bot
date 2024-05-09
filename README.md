@@ -13,7 +13,7 @@ A bot for playing music, and other stuff.
 
 > /play: Playing a song
 
-> /shuffle: Shuffling tracks
+> /shuffle: Shuffling the queue
 
 > /skip: Skipping current song
 
