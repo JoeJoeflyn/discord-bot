@@ -5,7 +5,6 @@ export const getFootballStats = async (search: string) => {
     );
 
     const data = await response.json();
-    console.log(JSON.stringify(data.sports_results.games, null, 2));
 
     return data;
   } catch (error) {

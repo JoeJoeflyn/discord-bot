@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Useless bot for discord",
   "main": "index.ts",
+  "type": "module",
   "author": "JoeJoe",
   "license": "MIT",
   "scripts": {

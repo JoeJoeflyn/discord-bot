@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
 import * as cheerio from "cheerio";
+import fetch from "node-fetch";
 
 export async function getLyrics(artist: string, songTitle: string) {
   artist = artist.toLowerCase();
