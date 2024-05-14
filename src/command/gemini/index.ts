@@ -8,11 +8,7 @@ export const data = new SlashCommandBuilder()
   .setName("asks")
   .setDescription("Reply with gemini!")
   .addStringOption((option) =>
-    option
-      .setName("input")
-      .setDescription("Type your word")
-      .setRequired(true)
-      .setAutocomplete(true)
+    option.setName("input").setDescription("Type your word").setRequired(true)
   );
 export async function execute(interaction: CommandInteraction) {
   const word = interaction.options.get("input");

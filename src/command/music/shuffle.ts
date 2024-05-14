@@ -7,7 +7,7 @@ import {
 
 export const data = new SlashCommandBuilder()
   .setName("shuffle")
-  .setDescription("Shuffle the current song.");
+  .setDescription("Shuffle the queue.");
 
 export async function execute(interaction: CommandInteraction) {
   const queue = useQueue(interaction?.guild?.id!);
@@ -17,7 +17,7 @@ export async function execute(interaction: CommandInteraction) {
       .setColor("#df4746")
       .setURL("https://github.com/JoeJoeflyn")
       .setDescription(
-        "I'm not playing music ! Add song with </play:1235922618230640664>."
+        "I'm not playing music ! Add song with </play:1236381760829391051>."
       );
 
     await interaction.reply({ embeds: [embed] });
@@ -31,7 +31,7 @@ export async function execute(interaction: CommandInteraction) {
       .setURL("https://github.com/JoeJoeflyn")
       .setDescription("☑️ Shuffled the queue");
 
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   } catch (e) {
     await interaction.reply(`Something went wrong: ${e}`);
   }

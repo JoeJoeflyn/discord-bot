@@ -1,19 +1,20 @@
 import { useQueue } from "discord-player";
 import {
-  Colors,
   ActionRowBuilder,
   AutocompleteInteraction,
   ButtonBuilder,
+  ButtonInteraction,
   ButtonStyle,
   CommandInteraction,
   EmbedBuilder,
   GuildMember,
   SlashCommandBuilder,
+  TextChannel,
   bold,
   hyperlink,
   quote,
 } from "discord.js";
-import { player } from "./../../config/player";
+import { client, player } from "./../../config/player";
 
 export const data = new SlashCommandBuilder()
   .setName("play")
@@ -34,6 +35,10 @@ export async function autocompleterun(interaction: AutocompleteInteraction) {
   }
   const results = await player.search(input as string);
 
+  if (interaction.responded) {
+    return;
+  }
+
   return interaction.respond(
     results.tracks.slice(0, 10).map((t) => {
       const name = `${t.title} - ${t.author} - ${t.duration}`;
@@ -47,7 +52,11 @@ export async function autocompleterun(interaction: AutocompleteInteraction) {
   );
 }
 
-export async function execute(interaction: CommandInteraction) {
+export async function execute(
+  interaction: CommandInteraction | ButtonInteraction
+) {
+  await interaction.deferReply();
+
   if (
     !(interaction.member instanceof GuildMember) ||
     !interaction.member.voice.channel
@@ -65,13 +74,20 @@ export async function execute(interaction: CommandInteraction) {
         )}`,
       });
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.followUp({ embeds: [embed], ephemeral: true });
 
     return;
   }
   const channel = interaction.member.voice.channel;
-  const query = interaction.options.get("input");
-  await interaction.deferReply();
+  const query = (interaction as CommandInteraction).options.get("input");
+
+  const channels = await client.channels.fetch(interaction.channelId!);
+
+  const messages = await (channels as TextChannel)?.messages?.fetch({
+    limit: 1,
+  });
+
+  const messageToEdit = messages.first();
 
   try {
     const queue = useQueue(interaction?.guild?.id!);
@@ -79,7 +95,10 @@ export async function execute(interaction: CommandInteraction) {
     if (queue?.isPlaying()) {
       const { track } = await player.play(channel, query?.value as string, {
         nodeOptions: {
-          metadata: interaction,
+          metadata: {
+            interaction: interaction,
+            id: messageToEdit?.id,
+          },
           leaveOnEnd: false,
         },
       });
@@ -92,11 +111,11 @@ export async function execute(interaction: CommandInteraction) {
           )} - \`${track.duration.toString()}\``
         );
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.followUp({ embeds: [embed] });
     } else {
       const { track } = await player.play(channel, query?.value as string, {
         nodeOptions: {
-          metadata: interaction,
+          metadata: { interaction, id: messageToEdit?.id },
           leaveOnEnd: false,
         },
       });
@@ -127,7 +146,7 @@ export async function execute(interaction: CommandInteraction) {
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId("pause")
-          .setEmoji("▶️")
+          .setEmoji("⏸️")
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId("stop")
@@ -135,7 +154,7 @@ export async function execute(interaction: CommandInteraction) {
           .setStyle(ButtonStyle.Secondary)
       );
 
-      await interaction.editReply({ embeds: [embed], components: [row] });
+      await interaction.followUp({ embeds: [embed], components: [row] });
     }
   } catch (e) {
     return interaction.followUp(`Something went wrong: ${e}`);

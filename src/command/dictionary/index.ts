@@ -10,7 +10,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { getDictionary } from "../../api/dictionary";
-import { UrbanDictionaryDefinition } from "../../shared/interface/dictionary/dictionary";
+import { UrbanDictionaryDefinition } from "../../shared/interface/dictionary";
 import { truncateString } from "../../shared/utils";
 
 export const data = new SlashCommandBuilder()

@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI("AIzaSyBRjyG_rm192CG_F8gR-ACZR03riYUMc-Q");
+dotenv.config();
+
+const genAI = new GoogleGenerativeAI(`${process.env.GOOGLE_API_KEY}`);
 
 export async function getGemini(prompt: string) {
   try {

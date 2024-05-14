@@ -18,7 +18,7 @@ export async function execute(
     const embed = new EmbedBuilder()
       .setColor("#df4746")
       .setDescription(
-        "I'm not playing music! Add a song with </play:1235922618230640664>."
+        "I'm not playing music! Add a song with </play:1236381760829391051>."
       );
     await interaction.reply({ embeds: [embed] });
     return;

@@ -5,7 +5,7 @@ import {
 } from "discord.js";
 export const data = new SlashCommandBuilder()
   .setName("ping")
-  .setDescription("Reply with Latency!");
+  .setDescription("Reply with latency!");
 
 export async function execute(interaction: CommandInteraction) {
   if (!interaction.client) {

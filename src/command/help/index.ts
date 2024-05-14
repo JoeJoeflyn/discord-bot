@@ -50,9 +50,7 @@ export async function execute(interaction: CommandInteraction) {
   if (word?.value === "play") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </play:1235922618230640664>",
-      })
+      .setTitle("Command </play:1236381760829391051>")
       .addFields(
         {
           name: "Description :",
@@ -69,9 +67,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "pause") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </pause:1236358751150407706>",
-      })
+      .setTitle("Command </pause:1236358751150407706>")
       .addFields({
         name: "Description :",
         value: `\`Pause music\``,
@@ -85,9 +81,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "resume") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </resume:1236358751150407708>",
-      })
+      .setTitle("Command </resume:1236358751150407708>")
       .addFields(
         {
           name: "Description :",
@@ -104,9 +98,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "shuffle") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </shuffle:1236358751150407707>",
-      })
+      .setTitle("Command </shuffle:1236358751150407707>")
       .addFields({
         name: "Description :",
         value: `\`Shuffle the queue\``,
@@ -120,9 +112,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "skip") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </skip:1236358751150407705>",
-      })
+      .setTitle("Command </skip:1236358751150407705>")
       .addFields(
         {
           name: "Description :",
@@ -139,9 +129,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "stop") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </stop:1236358751150407704>",
-      })
+      .setTitle("Command </stop:1236358751150407704>")
       .addFields({
         name: "Description :",
         value: `\`Disconnect the bot from voice channel\``,
@@ -155,9 +143,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "ping") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </ping:1236358751150407700>",
-      })
+      .setTitle("Command </ping:1236358751150407700>")
       .addFields({
         name: "Description :",
         value: `\`Reply with latency\``,
@@ -171,9 +157,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "urban_dictionary") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </urban_dictionary:1236358751150407701>",
-      })
+      .setTitle("Command </urban_dictionary:1236358751150407701>")
       .addFields({
         name: "Description :",
         value: `\`Reply with definition of the word\``,
@@ -187,9 +171,7 @@ export async function execute(interaction: CommandInteraction) {
   } else if (word?.value === "asks") {
     embed = new EmbedBuilder()
       .setColor("#947cea")
-      .setAuthor({
-        name: "Command </asks:1236358751150407702>",
-      })
+      .setTitle("Command </asks:1236358751150407702>")
       .addFields({
         name: "Description :",
         value: `\`Reply with gemini!\``,

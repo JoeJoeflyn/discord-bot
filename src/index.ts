@@ -1,8 +1,19 @@
-import { usePlayer } from "discord-player";
-import { AutocompleteInteraction, EmbedBuilder } from "discord.js";
+import { usePlayer, useQueue } from "discord-player";
+import {
+  ActionRowBuilder,
+  ActivityType,
+  AutocompleteInteraction,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  TextChannel,
+  bold,
+  hyperlink,
+} from "discord.js";
 import http from "http";
 import cron from "node-cron";
 import { handleTimeout } from "./auto/timeout";
+import { handleTwitchNotification } from "./auto/twitch";
 import { commands } from "./command";
 import { config } from "./config/config";
 import { client, player } from "./config/player";
@@ -17,15 +28,80 @@ const PORT = process.env.PORT || 3000;
 
 player.extractors.loadDefault((ext) => ext !== "AppleMusicExtractor");
 
+player.events.on("playerFinish", async (queue) => {
+  const tracks = useQueue(queue.metadata.interaction.guild.id);
+  const currentTrack = tracks?.tracks.data[0];
+
+  if (currentTrack) {
+    const channel = await client.channels.fetch(
+      queue.metadata.interaction.channelId!
+    );
+
+    const message = await (channel as TextChannel)?.messages?.fetch({
+      limit: 1,
+    });
+
+    const messageToEdit = message.first();
+
+    const embed = new EmbedBuilder()
+      .setColor("#6aba54")
+      .setAuthor({
+        name: "Now playing",
+        url: "https://github.com/JoeJoeflyn",
+      })
+      .setThumbnail(currentTrack?.thumbnail!)
+      .setDescription(
+        `${bold(
+          hyperlink(
+            `${currentTrack?.author} - ${currentTrack?.title}`,
+            currentTrack?.url!
+          )
+        )} - \`${currentTrack?.duration.toString()}\``
+      )
+      .setTimestamp()
+      .setFooter({
+        text: "Music Bot",
+        iconURL:
+          "https://i.pinimg.com/564x/b0/1a/2c/b01a2c6c066fb56f425030942a9f2c2b.jpg",
+      });
+
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder()
+        .setCustomId("skip")
+        .setEmoji("⏩")
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId("pause")
+        .setEmoji("⏸️")
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId("stop")
+        .setEmoji("⏹️")
+        .setStyle(ButtonStyle.Secondary)
+    );
+
+    if (channel instanceof TextChannel) {
+      if (!messageToEdit?.embeds[0]?.footer) {
+        queue.metadata.interaction.channel.send({
+          embeds: [embed],
+          components: [row],
+        });
+      } else {
+        await messageToEdit?.edit({ embeds: [embed], components: [row] });
+      }
+    }
+  }
+});
+
 player.events.on("emptyQueue", (queue) => {
   const embed = new EmbedBuilder()
     .setColor("#f1af32")
     .setTitle("Queue Concluded")
     .setDescription(
-      "There are no more songs in the queue, you can add more with </play:1235922618230640664>."
+      "There are no more songs in the queue, you can add more with </play:1236381760829391051>."
     );
 
-  queue.metadata.channel.send({ embeds: [embed] });
+  queue.metadata.interaction.channel.send({ embeds: [embed] });
 });
 
 player.events.on("emptyQueue", (queue) => {
@@ -36,16 +112,21 @@ player.events.on("emptyQueue", (queue) => {
         .setColor("#f1af32")
         .setDescription("I left the voice channel due to inactivity.");
 
-      queue.metadata.channel.send({ embeds: [embed] });
+      queue.metadata.interaction.channel.send({ embeds: [embed] });
     }
   }, 60 * 1000 * 5);
 });
 
-client.on("error", console.error);
-client.on("warn", console.warn);
-
 client.once("ready", async () => {
   console.log("Discord bot is ready! 🤖");
+
+  handleTwitchNotification(client);
+
+  client.user?.setActivity({
+    type: ActivityType.Custom,
+    name: "custom status",
+    state: "Listening to /help ✡ 🎶",
+  });
 
   cron.schedule("0 14 * * *", () => {
     const yourUserID = "540730246064898089";
