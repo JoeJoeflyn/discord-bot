@@ -1,7 +1,7 @@
 export const getTwitch = async () => {
   try {
     const response = await fetch(
-      `${process.env.TWITCH_URL}streams?user_login=caseoh_`,
+      `${process.env.TWITCH_URL}streams?user_login=ThePrimeagen`,
       {
         headers: {
           Authorization: `Bearer ${process.env.TWITCH_TOKEN}`,
@@ -22,7 +22,7 @@ export const getTwitch = async () => {
 export const getTwitchUser = async () => {
   try {
     const response = await fetch(
-      `${process.env.TWITCH_URL}users?login=caseoh_`,
+      `${process.env.TWITCH_URL}users?login=ThePrimeagen`,
       {
         headers: {
           Authorization: `Bearer ${process.env.TWITCH_TOKEN}`,

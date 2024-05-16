@@ -120,7 +120,7 @@ player.events.on("emptyQueue", (queue) => {
 client.once("ready", async () => {
   console.log("Discord bot is ready! 🤖");
 
-  handleTwitchNotification(client);
+  await handleTwitchNotification(client);
 
   client.user?.setActivity({
     type: ActivityType.Custom,

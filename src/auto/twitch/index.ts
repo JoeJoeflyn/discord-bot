@@ -2,17 +2,15 @@ import { Client, EmbedBuilder, bold, hyperlink } from "discord.js";
 import { getTwitch, getTwitchUser } from "../../api/twitch";
 
 export async function handleTwitchNotification(client: Client) {
-  const twitch = await getTwitch();
-
-  const streamer = await getTwitchUser();
-
-  const stream = twitch.data[0];
-
-  const channelIds = ["1235170642295263325", "909116735003693151"];
+  const channelIds = ["1235170642295263325", "909116735003693150"];
 
   let isLive = false;
 
-  setInterval(() => {
+  setInterval(async () => {
+    const twitch = await getTwitch();
+    const streamer = await getTwitchUser();
+    const stream = twitch.data[0];
+
     if (twitch.data.length > 0) {
       if (stream.type === "live" && !isLive) {
         isLive = true;
@@ -67,5 +65,5 @@ export async function handleTwitchNotification(client: Client) {
         isLive = false;
       }
     }
-  }, 60000);
+  }, 1000);
 }
