@@ -65,5 +65,5 @@ export async function handleTwitchNotification(client: Client) {
         isLive = false;
       }
     }
-  }, 1000);
+  }, 300000);
 }
