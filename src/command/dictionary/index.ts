@@ -94,7 +94,6 @@ async function sendPaginatedEmbeds(
     author: user,
     interaction,
     ephemeral: false,
-    time: 40000,
     disableButtons: embeds.length === 1,
     buttons: [
       {
