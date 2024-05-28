@@ -15,12 +15,33 @@ export const data = new SlashCommandBuilder()
 export async function execute(
   interaction: CommandInteraction | ButtonInteraction
 ) {
-  const { currentTrack } = useQueue(interaction?.guild?.id!) as GuildQueue;
+  const queue = useQueue(interaction?.guild?.id!) as GuildQueue;
+
+  if (!queue) {
+    const embed = new EmbedBuilder()
+      .setColor("#6aba54")
+      .setDescription("No songs are currently played.");
+
+    await interaction.reply({ embeds: [embed] });
+
+    return;
+  }
+
+  const { currentTrack } = queue;
 
   try {
     await interaction.deferReply();
 
     const text = await getLyrics(currentTrack?.author!, currentTrack?.title!);
+
+    if (!text || text.trim() === "") {
+      const embed = new EmbedBuilder()
+        .setColor("#6aba54")
+        .setDescription("No lyrics found for this song.");
+      await interaction.reply({ embeds: [embed] });
+
+      return;
+    }
 
     const embed = new EmbedBuilder()
       .setColor("#0099ff")

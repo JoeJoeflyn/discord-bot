@@ -18,29 +18,24 @@ import { client, player } from "./../../config/player";
 
 export const data = new SlashCommandBuilder()
   .setName("play")
-  .setDescription("Playing music from youtube")
+  .setDescription("Playing music")
   .addStringOption((option) =>
     option
       .setName("input")
       .setDescription("Type your word")
       .setRequired(true)
       .setAutocomplete(true)
-      .addChoices()
   );
 
 export async function autocompleterun(interaction: AutocompleteInteraction) {
   const input = interaction.options.getFocused();
-  if (!input) {
-    return;
-  }
-  const results = await player.search(input as string);
+  if (!input) return;
 
-  if (interaction.responded) {
-    return;
-  }
+  try {
+    const results = await player.search(input as string);
+    if (!results || !results.tracks.length) return;
 
-  return interaction.respond(
-    results.tracks.slice(0, 10).map((t) => {
+    const choices = results.tracks.slice(0, 10).map((t) => {
       const name = `${t.title} - ${t.author} - ${t.duration}`;
       const truncatedName =
         name.length > 100 ? name.substring(0, 97) + "..." : name;
@@ -48,8 +43,16 @@ export async function autocompleterun(interaction: AutocompleteInteraction) {
         name: truncatedName,
         value: t.url,
       };
-    })
-  );
+    });
+
+    if (!interaction.responded) {
+      await interaction.respond(choices).catch((error) => {
+        console.error("Error responding to autocomplete interaction:", error);
+      });
+    }
+  } catch (error) {
+    console.error("Error handling autocomplete interaction:", error);
+  }
 }
 
 export async function execute(

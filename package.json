@@ -15,7 +15,6 @@
     "@discord-player/extractor": "^4.4.7",
     "@discordjs/voice": "^0.16.1",
     "@google/generative-ai": "^0.9.0",
-    "@types/node-cron": "^3.0.11",
     "cheerio": "^1.0.0-rc.12",
     "discord-player": "^6.6.9-dev.1",
     "discord.js": "^14.14.1",
@@ -28,5 +27,7 @@
     "typescript": "^5.4.5",
     "ytdl-core": "^4.11.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node-cron": "^3.0.11"
+  }
 }

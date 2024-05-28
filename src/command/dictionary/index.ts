@@ -17,11 +17,7 @@ export const data = new SlashCommandBuilder()
   .setName("urban_dictionary")
   .setDescription("Reply with definition of the word")
   .addStringOption((option) =>
-    option
-      .setName("input")
-      .setDescription("Type your word")
-      .setRequired(true)
-      .setAutocomplete(true)
+    option.setName("input").setDescription("Type your word").setRequired(true)
   );
 
 export async function execute(interaction: CommandInteraction) {
